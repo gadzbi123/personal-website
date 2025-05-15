@@ -1,62 +1,96 @@
 ---
-title: "Primer: When You Have Too Much to Do"
-date: 2020-04-01T02:01:58+05:30
-description: "You have a to-do list that scrolls on for days. You are managing multiple projects, getting lots of email and messages on different messaging systems, managing finances and personal health habits and so much more."
-tags: [Primer, todo]
+title: "Everyone works differently and that's Ok"
+date: 2025-03-03T00:00:00+01:00
+description: "While being at several companies, I have encountered a special thing. Everyone work differently, because every person is unique"
+tags: [programming, individuality, work]
 ---
+This is one of the realizations that I had, when I started to work at my first job. I thought that everyone should do things same way. This is how the education system worked.
 
-You have a to-do list that scrolls on for days. You are managing multiple projects, getting lots of email and messages on different messaging systems, managing finances and personal health habits and so much more.
+You used the same Microsoft suite on the same PC and same app for coding. I felt like I hit a wall when someone said that they use JetBrains Rider instead of Visual Studio.
 
-It all keeps piling up, and it can feel overwhelming.
+This became even more plain when I got hired.
 
-How do you keep up with it all? How do you find focus and peace and get stuff accomplished when you have too much on your plate?
+## Everyone is working different
+No matter what the given task was, I never had someone that did the same thing twice. Even if the description of the task was identical.
 
-In this primer, I’ll look at some key strategies and tactics for taking on an overloaded life with an open heart, lots of energy, and a smile on your face.
+Coworker wrote tutorial on how to deploy a complex project. It had many services and post deployment scripts with frontend on top. Next person tried to use this tutorial and failed. After some fixes, other person tried to deploy it and failed with different issues.
 
-## The First Step: Triage
+Results were not consistent. Everyone used different tools, different shells, different editors and so on.
 
-Whether you’re just starting your day, or you’re in the middle of the chaos and just need to find some sanity … the first step is to get into triage mode.
+## Different tools
+### Do you know docker?
+Well, let me tell you, this is not the only way to avoid the it works on my machine issue. With docker you can create a simple Dockerfile, that stores you build script for the project. For example, like this.
 
-Triage, as you probably know, is sorting through the chaos to prioritize: what needs to be done now, what needs to be done today, what needs to be done this week, and what can wait? You’re looking at urgency, but also what’s meaningful and important.
+```dockerfile
+FROM golang:1.21 AS builder
+WORKDIR /app 
+COPY . . 
+RUN go mod download 
+RUN go build -o main . 
 
-Here’s what you might do:
+FROM alpine:latest 
+WORKDIR /root/ 
+COPY - from=builder /app/main . 
+CMD ["./main"]
+```
 
-* Pick out the things that need to be done today. Start a Short List for things you’re going to do today. That might be important tasks for big projects, urgent tasks that could result in damage if you don’t act, smaller admin tasks that you really should take care of today, and responding to important messages. I would recommend being ruthless and cutting out as much as you can, having just 5 things on your plate if that’s at all possible. Not everything needs to be done today, and not every email needs to be responded to.
-* Push some things to tomorrow and the rest of the week. If you have deadlines that can be pushed back (or renegotiated), do that. Spread the work out over the week, even into next week. What needs to be done tomorrow? What can wait a day or two longer?
-* Eliminate what you can. That might mean just not replying to some messages that aren’t that important and don’t really require a reply. It might mean telling some people that you can’t take on this project after all, or that you need to get out of the commitment that you said you’d do. Yes, this is uncomfortable. For now, just put them on a list called, “To Not Do,” and plan to figure out how to get out of them later.
+This script need to be build and run:
 
-OK, you have some breathing room and a manageable list now! Let’s shrink that down even further and just pick one thing.
+```dockerfile
+docker build -t my-golang-app .
+docker run -rm -p 8080:8080 -e PORT=8080 -e ALLOW_HTTP=true my-golang-app
+```
 
-## Next: Focus on One Thing
+This is all fine and dandy, but what if you have more variables for your service. Now you need remember all environment variables or save this lengthy command somewhere.
 
-With a lot on your plate, it’s hard to pick one thing to focus on. But that’s exactly what I’m going to ask you to do.
+You can also use **.env** file and pass it with command
 
-Pick one thing, and give it your focus. Yes, there are a lot of other things you can focus on. Yes, they’re stressing you out and making it hard to focus. But think about it this way: if you allow it all to be in your head all the time, that will always be your mode of being. You’ll always be thinking about everything, stressing out about it all, with a frazzled mind … unless you start shifting.
+```shell
+docker run -rm -env-file .env my-golang-app
+```
 
-The shift:
+At this point you are maintaining 2 files for you Go app. What happens when you have more services, that are independent? You could use something more powerful, then a Dockerfile.
 
-* Pick something to focus on. Look at the triaged list from the first section … if you have 5-6 things on this Short List, you can assess whether there’s any super urgent, time-sensitive things you need to take care of. If there are, pick one of them. If not, pick the most important one — probably the one you have been putting off doing.
-* Clear everything else away. Just for a little bit. Close all browser tabs, turn off notifications, close open applications, put your phone away.
-* Put that one task before you, and allow yourself to be with it completely. Pour yourself into it. Think of it as a practice, of letting go (of everything else), of focus, of radical simplicity.
+### Docker compose
+Now you realized, that having Dockerfile and .env file for each service is a bad idea. You need to store all docker commands somewhere, so why not have one command to rule them all.
 
-When you’re done (or after 15-20 minutes have gone by at least), you can switch to something else. But don’t allow yourself to switch until then.
+The docker compose allows you to store environment variables inside it. But it still requires you to maintain the Dockerfiles for each service. But wait there is more.
 
-By closing off all exits, by choosing one thing, by giving yourself completely to that thing … you’re now in a different mode that isn’t so stressful or spread thin. You’ve started a shift that will lead to focus and sanity.
+### Helm charts
+It can be annoying to maintain some of your services, when need to have some data after start. You want a Keycloak instance, that stores users and roles. You want a translating service, that stores your translations for different languages. You want to have customizable layout composition for navigating your UI.
 
-## Third: Schedule Time to Simplify
+This is where the helm charts come in. You can decide what steps you want to include in your builds. You can decide when you and if you want to run them. File values.yaml stores all variables for that and you can change them all in one place.
 
-Remember the To Not Do list above? Schedule some time this week to start reducing your projects, saying no to people, getting out of commitments, crossing stuff off your task list … so that you can have some sanity back.
+I don’t know much about helm, but I imagine it as easier way to deploy things into Kubernetes.
 
-There are lots of little things that you’ve said “yes” to that you probably shouldn’t have. That’s why you’re overloaded. Protect your more important work, and your time off, and your peace of mind, by saying “no” to things that aren’t as important.
+This is a tip of the iceberg, when it comes to build tools. You can still use bash scripts, make or even zig build system if you want.
 
-Schedule the time to simplify — you don’t have to do it today, but sometime soon — and you can then not have to worry about the things on your To Not Do list until then.
+{{< dots >}}
 
-## Fourth: Practice Mindful Focus
+## Different shells
+Shell is the part, that programmer interacts with the terminal. It usually depends on your development platform. Generally, you would use cmd or powershell for Windows, bash for Linux and zsh for Mac.
 
-Go through the rest of the day with an attitude of “mindful focus.” That means that you are doing one thing at a time, being as present as you can, switching as little as you can.
+In my job, I used to use Windows with wsl. So, bash on Windows. But after “security improvements”, it breaks more often, then it works.
 
-Think of it as a settling of the mind. A new mode of being. A mindfulness practice (which means you won’t be perfect at it).
+You can’t download some unsigned software, that you need for your development. It takes 2 seconds to save a file on C drive. Ubuntu has 2-year-old bugs, that were not fixed.
 
-As you practice mindful focus, you’ll learn to practice doing things with an open heart, with curiosity and gratitude, and even joy. Try these one at a time as you get to do each task on your Short List.
+_**|** It is not a nice experience._
 
-You’ll find that you’re not so overloaded, but that each task is just perfect for that moment. And that’s a completely new relationship with the work that you do, and a new relationship with life.
+So, after trying to figure out, how to use powershell verbose commands, I sticked to regular cmd. The cmd feels like very rusty hammer. But it can run one line command without any effort.
+
+Don’t get me wrong, I love Linux shell. When I stated my job, I didn’t feel comfortable switching to Linux for my primary OS. And now I regret it dearly.
+
+{{< dots >}}
+
+## Different editors
+I use Vcode, because I was most comfortable with it. It was OK for my dev projects. When I used python, it was very hard to debug my code in Vscode. I didn’t want to put a lot of effort into it. I switched to pyCharm for the debugger only. I could figure out was wrong and then fix my code in Vscode.
+
+Some of my coworkers used Visual Studio. The launch time of this editor makes me avoid it like hell fire. I die inside whenever I mis click and open Json file with VS.
+
+I tried neovim, but I always missed the intuitive functionality of Vscode. And I didn’t want to learn another language for my editor (lua). I could go back to it at some point, but for now I prefer to use the Microsoft’s tool.
+
+## Why is everyone doing things different?
+
+The industry has grown tremendously over the years. This is why we have so many ways to do things. And everyone likes to take the thing, that we use and adjust it to their needs. And that is ok.
+
+_The choice is the key for good software._

@@ -1,13 +1,18 @@
 baseURL = "https://example.com"
 languageCode = "en-us"
-title = "Gadzbi Personal Site"
+title = "Kacper Nitkiewicz Personal Site"
 theme="archie"
-copyright = "© Gadzbi"
+copyright = "© Kacper Nitkiewicz"
 ignoreErrors = ['error-missing-instagram-accesstoken']
+
 [params]
 	mode="toggle"
 	useCDN=false
 	subtitle = "Fast and Concise [blog for Gadzbi](https://github.com/gadzbi123/personal-website)"
+  favicon="favicon.ico"
+  
+[params.meta]
+  favicon = false
 
 [[params.social]]
 name = "GitHub"
