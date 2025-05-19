@@ -2,7 +2,7 @@
 title = "About"
 description = "Kacper Nitkiewicz, fast and reliable software engineer"
 date = "2025-05-15"
-aliases = ["about-us","about-hugo","contact"]
+aliases = ["contact"]
 author = "Kacper Nitkiewicz"
 +++
 

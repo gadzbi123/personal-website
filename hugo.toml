@@ -1,15 +1,16 @@
-baseURL = "https://example.com"
+baseURL = "https://gadzbi.com/"
 languageCode = "en-us"
 title = "Kacper Nitkiewicz Personal Site"
 theme="archie"
 copyright = "© Kacper Nitkiewicz"
 ignoreErrors = ['error-missing-instagram-accesstoken']
+uglyURLs = true
 
 [params]
 	mode="toggle"
 	useCDN=false
 	subtitle = "Fast and Concise [blog for Gadzbi](https://github.com/gadzbi123/personal-website)"
-  favicon="favicon.ico"
+  favicon="/favicon.ico"
   
 [params.meta]
   favicon = false
@@ -31,20 +32,20 @@ url = "https://x.com/GadzbiPL"
 
 [[menu.main]]
 name = "Home"
-url = "/"
+url = "/index.html"
 weight = 1
 
 [[menu.main]]
 name = "All posts"
-url = "/posts"
+url = "/posts.html"
 weight = 2
 
 [[menu.main]]
 name = "About"
-url = "/about"
+url = "/about.html"
 weight = 3
 
 [[menu.main]]
 name = "Tags"
-url = "/tags"
+url = "/tags.html"
 weight = 4
