@@ -1,7 +1,7 @@
 ---
 title: "Everyone works differently and that's Ok"
 date: 2025-03-03T00:00:00+01:00
-description: "While being at several companies, I have encountered a special thing. Everyone work differently, because every person is unique"
+description: "While being at several companies, I have encountered a special thing. Everyone work differently, because every person is unique..."
 tags: [programming, individuality, work]
 ---
 This is one of the realizations that I had, when I started to work at my first job. I thought that everyone should do things same way. This is how the education system worked.
